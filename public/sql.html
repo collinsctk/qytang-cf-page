@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>SQL注入漏洞测试</title>
+</head>
+<body>
+    <h1>SQL注入漏洞测试页面</h1>
+    <p>这是一个模拟SQL注入漏洞的页面，用于测试Cloudflare WAF</p>
+    
+    <div id="form-container">
+        <form id="sql-form">
+            <p>请输入用户ID: <input type="text" name="id" id="id-input">
+            <input type="submit" value="查询"></p>
+        </form>
+        <p><small>提示: 尝试输入 1 OR 1=1 测试SQL注入漏洞</small></p>
+    </div>
+    
+    <div id="result-container" style="display:none;">
+        <!-- 这里会显示SQL注入结果 -->
+    </div>
+    
+    <p><a href="/">返回首页</a></p>
+
+    <script>
+        // 获取URL参数
+        const urlParams = new URLSearchParams(window.location.search);
+        const idParam = urlParams.get('id');
+        
+        // 如果有id参数
+        if (idParam) {
+            // 显示结果容器，隐藏表单
+            document.getElementById('form-container').style.display = 'none';
+            document.getElementById('result-container').style.display = 'block';
+            
+            // 显示模拟的SQL注入结果
+            document.getElementById('result-container').innerHTML = `
+                <p>执行的SQL语句：</p>
+                <code>SELECT * FROM users WHERE id = ${idParam}</code>
+                
+                <p>试试这些常见的SQL注入测试：</p>
+                <ul>
+                    <li><code>1 OR 1=1</code> - 返回所有记录</li>
+                    <li><code>1; DROP TABLE users;--</code> - 尝试删除表</li>
+                    <li><code>1 UNION SELECT username,password FROM admin--</code> - 尝试联合查询</li>
+                </ul>
+            `;
+        }
+        
+        // 表单提交处理
+        document.getElementById('sql-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const idValue = document.getElementById('id-input').value;
+            window.location.href = `/sql.html?id=${encodeURIComponent(idValue)}`;
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,12 @@
+{
+  "name": "cloudflare-pages-demo",
+  "version": "1.0.0",
+  "description": "演示Cloudflare Pages和Functions",
+  "scripts": {
+    "deploy": "wrangler pages publish --project-name qytang-cloudflare .",
+    "deploy:notes": "注意: wrangler会自动处理public/目录的静态文件和functions/目录的函数"
+  },
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  }
+} 

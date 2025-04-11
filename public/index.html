@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎</title>
+</head>
+<body>
+    <h1>Welcome to qytang Cloudflare</h1>
+    <p>您的IP地址是: <span id="client-ip">加载中...</span></p>
+    <p><a href="/xss">XSS漏洞测试</a> | <a href="/sql">SQL注入测试</a></p>
+
+    <script>
+    // 获取客户端IP
+    fetch('/_functions/get-ip')
+        .then(response => response.text())
+        .then(ip => {
+            document.getElementById('client-ip').textContent = ip;
+        })
+        .catch(error => {
+            document.getElementById('client-ip').textContent = "无法获取IP";
+            console.error('获取IP出错:', error);
+        });
+    </script>
+</body>
+</html> 
